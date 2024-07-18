@@ -36,18 +36,19 @@ app.get("/api/:date", (req, res) => {
 
   // date = Number(date);
   const newDate = new Date(date);
-
+  console.log(newDate);
   // Timestamp function
 
   const timeStampDate = Math.floor(newDate.getTime());
-
+  console.log(timeStampDate)
   // UTC date
 
-  // const utcDate = newDate.toUTCString();
+  const utcDate = newDate.toUTCString();
+  console.log(utcDate);
 
   res.json({
     unix: timeStampDate,
-    utc: newDate,
+    utc: utcDate,
   });
 });
 
