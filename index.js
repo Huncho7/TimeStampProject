@@ -43,11 +43,11 @@ app.get("/api/:date", (req, res) => {
 
   // UTC date
 
-  const utcDate = newDate.toUTCString();
+  // const utcDate = newDate.toUTCString();
 
   res.json({
     unix: timeStampDate,
-    utc: utcDate,
+    utc: newDate,
   });
 });
 
