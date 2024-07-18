@@ -24,43 +24,65 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/", (req, res) => {
+  let currentTime = new Date();
+  let currentTimeStamp = Math.floor(currentTime.getTime());
+  let currentUtcTime = currentTime.toUTCString();
+  console.log(currentTime, currentTimeStamp, currentUtcTime);
+  res.json({
+    unix: currentTimeStamp,
+    utc: currentUtcTime
+  })
+
+})
+
 app.get("/api/:date", (req, res) => {
   // res.send("Hello");
-  let datePattern = /^\d{4}-\d{1,2}-\d{1,2}$/;
-  let numericPattern = /^\d+$/;
 
-  if (datePattern.test(req.params.date) === true || numericPattern.test(req.params.date)) {
-    // Getting date from url
-    let date = req.params.date;
+    // To test for string validity
 
-    if (!date.includes("-")) {
-      date = Number(date);
+    let datePattern = /^\d{4}-\d{1,2}-\d{1,2}$/;
+    let numericPattern = /^\d+$/;
+
+    // When date string is valid
+
+    if (
+      datePattern.test(req.params.date) === true ||
+      numericPattern.test(req.params.date)
+    ) {
+      // Getting date from url
+      let date = req.params.date;
+
+      if (!date.includes("-")) {
+        date = Number(date);
+      }
+
+      // date = Number(date);
+      const newDate = new Date(date);
+      console.log(newDate);
+      
+      // Timestamp function
+      const timeStampDate = Math.floor(newDate.getTime());
+      console.log(timeStampDate);
+
+      // UTC date
+      const utcDate = newDate.toUTCString();
+      console.log(utcDate);
+
+      // Response object
+      res.json({
+        unix: timeStampDate,
+        utc: utcDate,
+      });
+
+      // When date string is invalid 
+    } else {
+      res.json({
+        error: "Invalid date",
+      });
     }
-
-    // date = Number(date);
-    const newDate = new Date(date);
-    console.log(newDate);
-    // Timestamp function
-
-    const timeStampDate = Math.floor(newDate.getTime());
-    console.log(timeStampDate);
-    // UTC date
-
-    const utcDate = newDate.toUTCString();
-    console.log(utcDate);
-
-    res.json({
-      unix: timeStampDate,
-      utc: utcDate,
-    });
-  } else {
-    res.json({
-      error: "Invalid date"
-    })
   }
-
-  
-});
+);
 
 
 
