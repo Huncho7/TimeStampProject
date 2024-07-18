@@ -26,30 +26,40 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date", (req, res) => {
   // res.send("Hello");
+  let datePattern = /^\d{4}-\d{1,2}-\d{1,2}$/;
+  let numericPattern = /^\d+$/;
 
-  // Getting date from url
-  let date = req.params.date;
+  if (datePattern.test(req.params.date) === true || numericPattern.test(req.params.date)) {
+    // Getting date from url
+    let date = req.params.date;
 
-  if (!date.includes("-")) {
-    date = Number(date);
+    if (!date.includes("-")) {
+      date = Number(date);
+    }
+
+    // date = Number(date);
+    const newDate = new Date(date);
+    console.log(newDate);
+    // Timestamp function
+
+    const timeStampDate = Math.floor(newDate.getTime());
+    console.log(timeStampDate);
+    // UTC date
+
+    const utcDate = newDate.toUTCString();
+    console.log(utcDate);
+
+    res.json({
+      unix: timeStampDate,
+      utc: utcDate,
+    });
+  } else {
+    res.json({
+      error: "Invalid date"
+    })
   }
 
-  // date = Number(date);
-  const newDate = new Date(date);
-  console.log(newDate);
-  // Timestamp function
-
-  const timeStampDate = Math.floor(newDate.getTime());
-  console.log(timeStampDate)
-  // UTC date
-
-  const utcDate = newDate.toUTCString();
-  console.log(utcDate);
-
-  res.json({
-    unix: timeStampDate,
-    utc: utcDate,
-  });
+  
 });
 
 
